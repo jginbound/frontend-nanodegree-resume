@@ -62,9 +62,27 @@ var googleMap = '<div id="map"></div>';
 /*
 The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
 */
+
+// console.log('hi bella');
+
 $(document).ready(function() {
+  $('#main').prepend(internationalizeButton);
+  function inName(name){
+    var splitName = name.trim().split(' ');
+// console.log(splitName[0]);
+    var firstName = splitName[0].slice(0,1).toUpperCase() + splitName[0].slice(1,splitName[0].length).toLowerCase();
+    console.log(firstName);
+    //take first initial and rest of name to uppercase()//
+    // var firstName = firstName.slice(0,1);
+    // console.log(firstInitial);
+    var lastName = splitName[splitName.length -1 ].toUpperCase();
+    var fullName = firstName + ' ' + lastName;
+    return fullName;
+  };
+
+
   $('button').click(function() {
-    var iName = inName() || function(){};
+    var iName = inName('jonny gARces') || function(){};
     $('#name').html(iName);  
   });
 });
@@ -72,7 +90,7 @@ $(document).ready(function() {
 /*
 The next few lines about clicks are for the Collecting Click Locations quiz in Lesson 2.
 */
-clickLocations = [];
+var clickLocations = [];
 
 function logClicks(x,y) {
   clickLocations.push(
@@ -84,8 +102,10 @@ function logClicks(x,y) {
   console.log('x location: ' + x + '; y location: ' + y);
 }
 
-$(document).click(function(loc) {
-  // your code goes here!
+$(document).click(function(e) {
+  x = e.pageX;
+  y = e.pageY;
+  logClicks(x, y);
 });
 
 
@@ -130,18 +150,20 @@ function initializeMap() {
 
     // iterates through school locations and appends each location to
     // the locations array
-    for (var school in education.schools) {
-      locations.push(education.schools[school].location);
+    for(var i=0; i<education.schools.length; i++){
+      locations.push(education.schools[i].location);
     }
 
     // iterates through work locations and appends each location to
     // the locations array
-    for (var job in work.jobs) {
-      locations.push(work.jobs[job].location);
+    for (var i=0; i<work.jobs.length; i++) {
+      locations.push(work.jobs[i].location);
     }
-
+    console.log(locations);
     return locations;
-  }
+
+  };
+  
 
   /*
   createMapMarker(placeData) reads Google Places search results to create map pins.
@@ -235,11 +257,11 @@ Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
+window.addEventListener('resize', function(e) {
   //Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+ map.fitBounds(mapBounds);
+});
